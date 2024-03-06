@@ -12,7 +12,7 @@ pipeline {
 		string(name: "WAR_FILE_PATH", defaultValue: "/var/lib/jenkins/workspace/final-project/target/*SNAPSHOT.war", trim: false, description: "Provide war file job path in jenkins")
 		choice(name: "ENVIRONMENT", choices: ["", "Dev", "Test", "PROD"], description: 'Choose an environment to deploy')		
 		string(name: "ANSIBLE_IP", defaultValue: "18.212.36.144", trim: false, description: "Provide Ansible Server IP-ADDRESS")
-		password(name: "ANSIBLE_USER_PASSWORD", defaultValue: "vijay", description: "Provide Ansible server user password")
+		password(name: "ANSIBLE_USER_PASSWORD", defaultValue: "amancha", description: "Provide Ansible server user password")
         
     }
     stages {
@@ -21,7 +21,7 @@ pipeline {
              steps {
                   script {
                        env.BUILD = "Yes"  // Setting env variable for Build 
-					   env.USER = 'Vijay'
+					   env.USER = 'amancha'
                              //Generally it is possible to use Groovy’s conditionals in a declarative syntax, when we use a script step.					   
                              }                     							 
                        }
@@ -30,7 +30,7 @@ pipeline {
 	  	  
       stage ('Checkout SCM'){
         steps {
-          checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/vijay2181/java-maven-SampleWarApp.git']]])
+          checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/amancha1107/java-maven-SampleWarApp.git']]])
         }
       }
 	  
@@ -43,7 +43,7 @@ pipeline {
                 expression { params.BUILD == 'Yes' }
             }
 		  steps {
-                echo "Hello, Vijay!"
+                echo "Hello, amancha!"
 				sh "mvn clean install"
 				sh "scp -o StrictHostKeyChecking=no ${params.WAR_FILE_PATH} vijay@${params.ANSIBLE_IP}:/opt/artifact"
 				
@@ -63,7 +63,7 @@ pipeline {
 						}
                     steps {
                         echo "Executing Ansible playbook on remote Ansible Host from jenkins Server"
-                        sh "sshpass -v -p '${params.ANSIBLE_USER_PASSWORD}' ssh 'vijay@${params.ANSIBLE_IP}' 'ansible-playbook /etc/ansible/playbooks/copy-war.yml --limit webserver1' "
+                        sh "sshpass -v -p '${params.ANSIBLE_USER_PASSWORD}' ssh 'amancha@${params.ANSIBLE_IP}' 'ansible-playbook /etc/ansible/playbooks/copy-war.yml --limit webserver1' "
                     }
                 }
                 stage("Test") {
@@ -75,7 +75,7 @@ pipeline {
 						}
                     steps {
                         echo "Executing Ansible playbook on remote Ansible Host from jenkins Server"
-                        sh "sshpass -v -p '${params.ANSIBLE_USER_PASSWORD}' ssh 'vijay@${params.ANSIBLE_IP}' 'ansible-playbook /etc/ansible/playbooks/copy-war.yml --limit webserver2' "
+                        sh "sshpass -v -p '${params.ANSIBLE_USER_PASSWORD}' ssh 'amancha@${params.ANSIBLE_IP}' 'ansible-playbook /etc/ansible/playbooks/copy-war.yml --limit webserver2' "
                     }
                 }
                 stage("PROD") {
@@ -83,7 +83,7 @@ pipeline {
                           expression { params.ENVIRONMENT == 'Prod'}
                          }
                     steps {
-                        sh "echo 'vijay'"
+                        sh "echo 'amancha'"
                     }		
 			    }
 			}
