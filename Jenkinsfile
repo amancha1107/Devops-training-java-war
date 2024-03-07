@@ -30,7 +30,7 @@ pipeline {
 	  	  
       stage ('Checkout SCM'){
         steps {
-          checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/amancha1107/java-maven-SampleWarApp.git']]])
+          checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/amancha1107/Devops-training-java-war.git']]])
         }
       }
 	  
